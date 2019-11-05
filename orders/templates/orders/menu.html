@@ -4,4 +4,30 @@
 {%block body%}
 
 
+
+<form method = "POST" action="/menu">
+        {% csrf_token %}
+    <p>Press ctrl + c to select multiple toppings <br>
+       ONLY SELECT THE SAME  AMOUNT OF TOPPINGS ON PIZZA ORDER
+    </p>
+    {% for key, value in context.items %}
+    <div class="form-group">
+        <label for="FormControlSelect0">{{key}}</label>
+        <select multiple class="form-control" id="FormControlSelect0" name="{{key}}">
+        <option  selected value = "">None</option>
+            {% for thing in value %}
+            <option value="{{thing}}">{{thing}}</option>
+            {% endfor %}
+        </select>
+      </div>
+    {% endfor %}
+      
+    <button type="submit" class = "btn btn-primary ">Add selections to cart</button>
+      
+</form>
+
+
+
+
+
 {% endblock %}
