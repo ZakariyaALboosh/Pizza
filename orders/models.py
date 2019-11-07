@@ -84,13 +84,20 @@ class Sub(models.Model):
 
 
 
-class ShoppingCartItem(models.Model):
+class ShoppingCart(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        unique = True ,  
     )  
-    item = models.CharField(max_length=255)
+    pasta = models.ManyToManyField(Pasta, blank = True)
+    salad = models.ManyToManyField(Salad, blank = True)
+    sub = models.ManyToManyField(Sub, blank = True)
+    subExtra = models.ManyToManyField(SubExtra, blank = True)
+    pizza = models.ManyToManyField(Pizza, blank = True)
+    topping = models.ManyToManyField(Topping, blank = True)
+    dinnerPlatter = models.ManyToManyField(DinnerPlatter, blank = True)
     price = models.DecimalField(help_text="Price in U$S", max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return f"{self.user} - {self.item} - {self.price}"    
+        return f"{self.user} - Pizza :" + str(self.pizza.all()) + "Toppings:" + str(self.topping.all()) +  " - Sub:" + str(self.sub.all()) + " Extras: "  + str(self.subExtra.all()) + "- Pasta : " + str(self.pasta.all()) + "- Salad : " + str(self.salad.all()) + "- DinnerPlatter: " + str(self.dinnerPlatter.all()) + f"  Price: {self.price} "   

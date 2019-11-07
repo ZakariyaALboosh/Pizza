@@ -16,7 +16,7 @@
         <select multiple class="form-control" id="FormControlSelect0" name="{{key}}">
         <option  selected value = "">None</option>
             {% for thing in value %}
-            <option value="{{thing}}">{{thing}}</option>
+            <option value="{{thing.id}}">{{thing}}</option>
             {% endfor %}
         </select>
       </div>
