@@ -41,10 +41,29 @@ def menu_view(request):
 
             newCart = ShoppingCart(user = username, price = totalPrice )
             newCart.save()
-            itemsdict =  {"Pizza" : pizza , "Salad" :salad , "DinnerPlater" : dinnerplater ,"Pasta" : pasta , "SubExtra" : subextra , "Sub" : sub , "topping" : topping}
-            for key , value in itemsdict :
-                for food in value : 
-                    newCart.key.add(food)
+            itemsdict =  {"pizza" : pizza , "salad" :salad , "dinnerPlater" : dinnerplater ,"pasta" : pasta , "subExtra" : subextra , "sub" : sub , "topping" : topping}
+            for key , value in itemsdict.items() :
+                if key == "pizza" :
+                    for food in value :
+                        newCart.pizza.add(food)
+                if key == "salad" :
+                    for food in value :
+                        newCart.salad.add(food)  
+                if key == "dinnerPlater" :
+                    for food in value :
+                        newCart.dinnerPlatter.add(food)
+                if key == "pasta" :
+                    for food in value :
+                        newCart.pasta.add(food)
+                if key == "subExtra" :
+                    for food in value :
+                        newCart.subExtra.add(food)
+                if key == "sub" :
+                    for food in value :
+                        newCart.sub.add(food)
+                if key == "topping" :
+                    for food in value :
+                        newCart.topping.add(food)                                              
             newCart.save()        
             print(newCart)
         else:
@@ -75,3 +94,53 @@ def menu_view(request):
           
         }
         return render(request, "orders/menu.html", {'context':context} )
+
+
+def shoppingCart_view(request):
+    if request.method == "GET" :
+        pizza = Pizza.objects.all()
+        pasta = Pasta.objects.all()
+        salad = Salad.objects.all()
+        dinnerPlatter = DinnerPlatter.objects.all()
+        toppings = Topping.objects.all()
+        subExtra = SubExtra.objects.all()
+        sub = Sub.objects.all()
+        
+        username = request.user
+        userCart = ShoppingCart.objects.get(user = username)
+        upizza = userCart.pizza.all()
+        utopping = userCart.topping.all()
+        usalad = userCart.salad.all()
+        udinnerPlatter = userCart.dinnerPlatter.all()
+        upasta = userCart.pasta.all()
+        usubExtra = userCart.subExtra.all()
+        usub = userCart.sub.all()
+
+        context = {
+            "Pizza": pizza,
+            "Topping": toppings,
+            "Salad" : salad,
+            "DinnerPlatter" : dinnerPlatter,
+            "Pasta" : pasta,
+            "SubExtra"  : subExtra,
+            "Sub" : sub
+          
+        }
+
+        cartitems = {
+           "Pizza": upizza,
+            "Topping": utopping,
+            "Salad" : usalad,
+            "DinnerPlatter" : udinnerPlatter,
+            "Pasta" : upasta,
+            "SubExtra"  : usubExtra,
+            "Sub" : usub 
+        }
+        
+        return render(request, "orders/shoppingCart.html", {'context':context , 'cartitems' : cartitems } )
+
+
+
+
+    else :
+         return HttpResponse("method is post")

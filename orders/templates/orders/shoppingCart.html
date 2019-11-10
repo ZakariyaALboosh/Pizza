@@ -1,0 +1,43 @@
+{% extends "orders/base.html"%}
+
+
+{%block body%}
+<div> <h3>Your Cart.</h3>
+   {% for key, value in  cartitems.items %} 
+<div>
+    <h6>{{key}}</h6>
+    {%for item in value %}
+    <p>{{item}} <button data-my_id = {{item.id}} class = "btn btn-danger">Remove item</button></p>
+    {% endfor %}
+</div>
+{% endfor %}
+
+</div>
+<form method = "POST" action="/menu">
+        {% csrf_token %}
+        <h5>Add more to the cart </h5>
+    <p>
+        Press ctrl + c to select multiple toppings <br>
+       ONLY SELECT THE SAME  AMOUNT OF TOPPINGS ON PIZZA ORDER
+    </p>
+    {% for key, value in context.items %}
+    <div class="form-group">
+        <label for="FormControlSelect0">{{key}}</label>
+        <select multiple class="form-control" id="FormControlSelect0" name="{{key}}">
+        <option  selected value = "">None</option>
+            {% for thing in value %}
+            <option value="{{thing.id}}">{{thing}}</option>
+            {% endfor %}
+        </select>
+      </div>
+    {% endfor %}
+      
+    <button type="submit" class = "btn btn-primary ">Add selections to cart</button>
+      
+</form>
+
+
+
+
+
+{% endblock %}
